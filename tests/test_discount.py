@@ -12,3 +12,13 @@ def test_discount_normal(ori_price, discount_percent, final_price):
     cal_price = calculate_discount(ori_price, discount_percent)
 
     assert final_price == cal_price
+
+
+@pytest.mark.parametrize("ori_price, discount_percent, err_type",[
+    (-100, 10, ValueError),
+    (200, 105, ValueError),
+],ids=["Negative_price", "Over 100 percent discount"])
+
+def test_discount_normal(ori_price, discount_percent, err_type):
+    with pytest.raises(err_type):
+        calculate_discount(ori_price, discount_percent)
