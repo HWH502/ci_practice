@@ -4,6 +4,7 @@ on:       # 何時會觸發
   push:
     branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:     # 實際會執行什麼工作
   test:
