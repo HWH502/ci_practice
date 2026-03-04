@@ -1,15 +1,15 @@
-name: CI
+name: CI  # Workflow 名稱
 
-on:
+on:       # 何時會觸發
   push:
     branches: [ main ]
   pull_request:
 
-jobs:
+jobs:     # 實際會執行什麼工作
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest         # 在怎樣的設備上運行
 
-    steps:
+    steps:                         # 在怎樣的設備上運行
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -24,8 +24,8 @@ jobs:
       - name: Sync dependencies
         run: uv sync --frozen
 
-      # - name: Install project
-      #   run: uv pip install -e .
+      - name: Run tests and coverage
+        run: uv run pytest --cov=app --con-fail-under=80
 
-      - name: Run tests
-        run: uv run pytest
+      - name: Run ruff
+        run: uv run ruff check .
