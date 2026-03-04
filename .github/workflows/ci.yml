@@ -7,7 +7,7 @@ on:       # 何時會觸發
     branches: [ main ]
 
 jobs:     # 實際會執行什麼工作
-  test:
+  work:
     runs-on: ubuntu-latest         # 在怎樣的設備上運行
 
     steps:                         # 在怎樣的設備上運行
