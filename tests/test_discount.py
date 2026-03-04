@@ -19,6 +19,6 @@ def test_discount_normal(ori_price, discount_percent, final_price):
     (200, 105, ValueError),
 ],ids=["Negative_price", "Over 100 percent discount"])
 
-def test_discount_normal(ori_price, discount_percent, err_type):
+def test_discount_fail(ori_price, discount_percent, err_type):
     with pytest.raises(err_type):
         calculate_discount(ori_price, discount_percent)

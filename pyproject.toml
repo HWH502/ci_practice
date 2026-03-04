@@ -9,6 +9,8 @@ dependencies = [
 ]
 
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["app"]
+[tool.pytest.ini_options]
+addopts = "--import-mode=importlib"
+pythonpath = [
+    "."
+]
