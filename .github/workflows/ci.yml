@@ -25,7 +25,7 @@ jobs:     # 實際會執行什麼工作
         run: uv sync --frozen
 
       - name: Run tests and coverage
-        run: uv run pytest --cov=app --con-fail-under=80
+        run: uv run pytest --cov=app --cov-fail-under=80
 
       - name: Run ruff
         run: uv run ruff check .
