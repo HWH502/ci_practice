@@ -8,9 +8,14 @@ on:       # 何時會觸發
 
 jobs:     # 實際會執行什麼工作
   test:
+    name: test (${{ matrix.python-version }})
     runs-on: ubuntu-latest         # 在怎樣的設備上運行
 
-    steps:                         # 在怎樣的設備上運行
+    strategy:
+      matrix:
+        python-version: ["3.9","3.10","3.11"]
+
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -20,7 +25,7 @@ jobs:     # 實際會執行什麼工作
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: ${{matrix.python-version}}
 
       - name: Sync dependencies
         run: uv sync --frozen
@@ -33,3 +38,12 @@ jobs:     # 實際會執行什麼工作
 
       - name: Run ruff
         run: uv run ruff check .
+
+  test-summary:
+    name: test
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    steps:
+      - run: echo "All matrix tests passed"
