@@ -23,3 +23,6 @@ def test_discount_normal(ori_price, discount_percent, final_price):
 def test_discount_fail(ori_price, discount_percent, err_type):
     with pytest.raises(err_type):
         calculate_discount(ori_price, discount_percent)
+
+
+# Test uv cache headling
