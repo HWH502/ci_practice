@@ -17,3 +17,4 @@ def calculate_discount(price: float, discount_percent: float) -> float:
 
 
 ## This is just from CI cache testing.
+## This is for another testing.
