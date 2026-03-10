@@ -14,7 +14,3 @@ def calculate_discount(price: float, discount_percent: float) -> float:
 
     discount_amount = price * (discount_percent / 100)
     return round(price - discount_amount)
-
-
-## This is just from CI cache testing.
-## This is for another testing.
