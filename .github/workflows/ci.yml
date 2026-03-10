@@ -27,11 +27,21 @@ jobs:     # 實際會執行什麼工作
         with:
           python-version: ${{matrix.python-version}}
 
+      - name: Debug cache key
+        run: |
+          echo "OS: ${{ runner.os }}"
+          echo "Python: ${{ matrix.python-version }}"
+          echo "Lock hash: ${{ hashFiles('uv.lock') }}"
+          echo "Cache key: uv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('uv.lock') }}"
+
       - name: Cache uv
         uses: actions/cache@v4
         with:
           path: ~/.cache/uv
           key: uv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('uv.lock') }}
+
+      - name: Show cache status
+        run: echo "Cache hit = ${{ steps.cache-uv.outputs.cache-hit }}"
 
 
       - name: Sync dependencies
@@ -45,6 +55,9 @@ jobs:     # 實際會執行什麼工作
 
       - name: Run ruff
         run: uv run ruff check .
+
+      - name: Debug
+        run: ls -R ~/.cache
 
   test-summary:
     name: test
