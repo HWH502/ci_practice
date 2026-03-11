@@ -13,25 +13,57 @@ jobs:     # 實際會執行什麼工作
 
     strategy:
       matrix:
-        python-version: ["3.9","3.10","3.11"]
+        python-version: ["3.10","3.11"]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: astral-sh/setup-uv@v7
         with:
-          python-version: ${{matrix.python-version}}
+          python-version: ${{ matrix.python-version }}
+          enable-cache: "true"
+          # Glob pattern to match files relative to the repository root to control the cache
+          cache-dependency-glob: |
+            **/*requirements*.txt
+            **/*requirements*.in
+            **/*constraints*.txt
+            **/*constraints*.in
+            **/pyproject.toml
+            **/uv.lock
+            **/*.py.lock
 
-      - name: Cache uv
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/uv
-          key: uv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('uv.lock') }}
+          # Whether to restore the cache if found
+          restore-cache: "true"
+
+          # Whether to save the cache after the run
+          save-cache: "true"
+
+
+      # - name: Set up Python
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: ${{matrix.python-version}}
+
+      # - name: Debug cache key
+      #   run: |
+      #     echo "OS: ${{ runner.os }}"
+      #     echo "Python: ${{ matrix.python-version }}"
+      #     echo "Lock hash: ${{ hashFiles('uv.lock') }}"
+      #     echo "Cache key: uv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('uv.lock') }}"
+
+      # - name: Create uv cache dir
+      #   run: mkdir -p ~/.cache/uv
+
+      # - name: Cache uv
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ~/.cache/uv
+      #     key: uv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('uv.lock') }}
+
+      # - name: Show cache status
+      #   run: echo "Cache hit = ${{ steps.cache-uv.outputs.cache-hit }}"
 
 
       - name: Sync dependencies
@@ -45,6 +77,7 @@ jobs:     # 實際會執行什麼工作
 
       - name: Run ruff
         run: uv run ruff check .
+
 
   test-summary:
     name: test
