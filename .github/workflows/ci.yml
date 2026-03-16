@@ -70,13 +70,19 @@ jobs:     # 實際會執行什麼工作
         run: uv sync --frozen
 
       - name: Run tests and coverage
-        run: uv run pytest --cov=app --cov-fail-under=80
+        run: uv run pytest --cov=app --cov-fail-under=80 --cov-report=html
 
       - name: Run pre-commit
         run: uv run pre-commit run --all-files
 
       - name: Run ruff
         run: uv run ruff check .
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: htmlcov/
 
 
   test-summary:
