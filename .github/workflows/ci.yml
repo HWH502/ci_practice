@@ -84,8 +84,10 @@ jobs:     # 實際會執行什麼工作
           name: coverage-${{ matrix.python-version }}
           path: htmlcov/
 
-      - name: Upload coverage (xml)
-        uses: codecov/codecov-action@v4
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
 
   test-summary:
