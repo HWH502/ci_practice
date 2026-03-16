@@ -70,7 +70,7 @@ jobs:     # 實際會執行什麼工作
         run: uv sync --frozen
 
       - name: Run tests and coverage
-        run: uv run pytest --cov=app --cov-fail-under=80 --cov-report=html
+        run: uv run pytest --cov=app --cov-fail-under=80 --cov-report=html --cov-report=xml
 
       - name: Run pre-commit
         run: uv run pre-commit run --all-files
@@ -78,11 +78,14 @@ jobs:     # 實際會執行什麼工作
       - name: Run ruff
         run: uv run ruff check .
 
-      - name: Upload coverage
+      - name: Upload coverage (html)
         uses: actions/upload-artifact@v4
         with:
           name: coverage-${{ matrix.python-version }}
           path: htmlcov/
+
+      - name: Upload coverage (xml)
+        uses: codecov/codecov-action@v4
 
 
   test-summary:
